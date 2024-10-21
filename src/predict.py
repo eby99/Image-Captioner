@@ -5,32 +5,10 @@ import torch
 from PIL import Image
 import matplotlib.pyplot as plt
 import streamlit as st
-import gdown
+
 from model import Net
 from utils import ConfigL, ConfigS, download_weights
 
-
-
-
-# File download from Google Drive
-file_id = '1pSQruQyg8KJq6VmzhMLFbT_VaHJMdlWF'
-destination = 'weights/small/model.pt'
-url = f'https://drive.google.com/uc?id={file_id}'
-
-# Ensure the directory exists
-os.makedirs('weights/small', exist_ok=True)
-
-# Check if the file already exists
-if not os.path.exists(destination):
-    st.write("Downloading model weights...")
-    gdown.download(url, destination, quiet=False)
-else:
-    st.write("Model weights already downloaded.")
-
-# Load the model after downloading
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-checkpoint = torch.load(destination, map_location=device)
-# Your model loading code continues...
 # Streamlit application
 st.title("Image Caption Generator")
 
