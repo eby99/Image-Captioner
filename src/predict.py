@@ -40,7 +40,11 @@ if uploaded_file is not None:
         model_size = st.selectbox("Select Model Size", options=["SMALL", "LARGE"])
 
         if st.button("Generate Caption"):
-            config = ConfigL() if model_size.upper() == "LARGE" else ConfigS()
+            try:
+                config = ConfigL() if model_size.upper() == "LARGE" else ConfigS()
+            except Exception as e:
+                st.error(f"Error initializing configuration: {e}")
+                st.stop()  # Stop further execution if configuration fails
 
             # Ensure weights directory exists
             weights_dir = config.weights_dir
@@ -107,4 +111,3 @@ if uploaded_file is not None:
 
     except Exception as e:
         st.error(f"Error loading image: {e}")
-
