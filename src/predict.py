@@ -42,12 +42,15 @@ if uploaded_file is not None:
         if st.button("Generate Caption"):
             try:
                 config = ConfigL() if model_size.upper() == "LARGE" else ConfigS()
+                st.write(f"Using configuration: {config.__dict__}")
             except Exception as e:
                 st.error(f"Error initializing configuration: {e}")
                 st.stop()  # Stop further execution if configuration fails
 
             # Ensure weights directory exists
             weights_dir = config.weights_dir
+            st.write(f"Weights directory: {weights_dir}")
+
             if not os.path.exists(weights_dir):
                 os.makedirs(weights_dir)
 
