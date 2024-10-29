@@ -5,9 +5,10 @@ import torch
 from PIL import Image
 import matplotlib.pyplot as plt
 import streamlit as st
+import gdown
 
 from model import Net
-from utils import ConfigL, ConfigS, download_weights
+from utils import ConfigL, ConfigS
 
 # Google Drive model weights dictionary
 MODEL_WEIGHTS = {
@@ -16,9 +17,7 @@ MODEL_WEIGHTS = {
 }
 
 def download_weights(checkpoint_fpath, model_size="L"):
-    """
-    Downloads weights from Google Drive.
-    """
+    """ Downloads weights from Google Drive. """
     download_id = MODEL_WEIGHTS[model_size.strip().upper()]
     gdown.download(
         f"https://drive.google.com/uc?id={download_id}", checkpoint_fpath, quiet=False
@@ -32,7 +31,9 @@ uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png
 
 if uploaded_file is not None:
     try:
+        # Attempt to open the image
         img = Image.open(uploaded_file)
+        img = img.convert("RGB")  # Convert to RGB to ensure compatibility
         st.image(img, caption='Uploaded Image.', use_column_width=True)
 
         # Model configuration
@@ -105,4 +106,5 @@ if uploaded_file is not None:
                 st.error(f"Error loading model: {e}")
 
     except Exception as e:
-        st.error("Error loading image. Please upload a valid image file.")
+        st.error(f"Error loading image: {e}")
+
